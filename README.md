@@ -1,2 +1,0 @@
-# NabhaCareConnect
-Private repo
