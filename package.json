@@ -1,0 +1,25 @@
+{
+  "name": "bharat-care-connect",
+  "version": "1.0.0",
+  "description": "Unified healthcare platform for Doctor and Patient panels",
+  "scripts": {
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "install:backend": "cd unified-backend && npm install",
+    "install:frontend": "cd unified-app && npm install",
+    "start:backend": "cd unified-backend && npm start",
+    "start:frontend": "cd unified-app && npm run dev",
+    "dev": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "seed:dev": "cd unified-backend && npm run seed",
+    "test": "cd unified-backend && npm test",
+    "test:e2e": "cd unified-app && npm run test:e2e",
+    "test:i18n": "cd unified-app && npm run test:i18n",
+    "typecheck": "cd unified-app && npm run typecheck",
+    "build": "cd unified-app && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.8.1"
+  }
+}

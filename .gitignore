@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Environment files — never commit real credentials
+.env
+.env.local
+.env.*.local
+
+# Local database and generated secrets
+unified-backend/data/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+.jwt-secret
+
+# Build output
+dist/
+build/
+.vite/
+
+# Test artefacts
+unified-app/e2e-screenshots/
+.pytest_cache/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+npm-debug.log*

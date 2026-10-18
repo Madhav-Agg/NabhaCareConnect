@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="NabhaCare Connect">
+  <!--
+    Favicon. Deliberately flat and legible at 16px: a teal shield (care, safety)
+    with the cross negative space reading as the universal medical signal. No
+    gradients, no text — text is unreadable at tab size.
+  -->
+  <rect width="64" height="64" rx="14" fill="#0e6466" />
+  <path
+    d="M32 12c7.5 5.2 12 9.5 12 15.4C44 38 38.9 46.4 32 52c-6.9-5.6-12-14-12-24.6C20 21.5 24.5 17.2 32 12Z"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3.5"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M32 25.5v13M25.5 32h13"
+    stroke="#ffffff"
+    stroke-width="4.5"
+    stroke-linecap="round"
+  />
+</svg>

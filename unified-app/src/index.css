@@ -1,0 +1,378 @@
+/**
+ * NabhaCare Connect — design system.
+ *
+ * ── Direction: "Clinical Calm" ──────────────────────────────────────────────
+ * The visual language of a well-run district health centre: paper-warm neutrals,
+ * one authoritative teal, generous air, and no decoration that competes with the
+ * content. The audience reads this on a mid-range Android, often in bright
+ * sunlight, in one of three scripts, and is frequently in a hurry or worried.
+ *
+ * ── Rules this file enforces ────────────────────────────────────────────────
+ *  1. Every colour is a semantic token. No component writes a raw colour, so
+ *     dark mode is a token swap and nothing else.
+ *  2. Every contrast pair that carries text is verified by
+ *     `scripts/check-contrast.mjs` at WCAG 2.2 AA (4.5:1 text, 3:1 UI/focus).
+ *     Change a value here and re-run that script.
+ *  3. Spacing and type come from the scales below (or Tailwind's default modular
+ *     scale, which is one ratio — 1.25 — applied consistently).
+ *  4. Motion is 140/200/320ms and honours `prefers-reduced-motion`.
+ */
+
+/* Long-label handling for Hindi and Punjabi.
+   Must be the first statement: @import is only valid before any other rule. */
+@import "./styles/text-overflow.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── Colour: light ──────────────────────────────────────────────────────
+       Deep teal on warm paper. The teal is deliberately dark (25% lightness)
+       so it works as a fill with light text *and* as text on the page. */
+    --background: 150 12% 97%;
+    --foreground: 200 24% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 24% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 24% 12%;
+
+    --primary: 184 76% 25%;
+    --primary-foreground: 160 40% 98%;
+    --primary-hover: 185 78% 20%;
+
+    /* Mint — support and secondary surfaces. */
+    --secondary: 166 44% 92%;
+    --secondary-foreground: 186 72% 18%;
+
+    --muted: 150 12% 94%;
+    --muted-foreground: 200 12% 36%;
+
+    --accent: 166 40% 91%;
+    --accent-foreground: 186 72% 18%;
+    --accent-hover: 166 42% 86%;
+
+    --destructive: 0 68% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Pale amber with dark brown text: readable as a fill *and* as a caution
+       surface, without the yellow-on-white trap. */
+    --warning: 42 96% 86%;
+    --warning-foreground: 28 82% 22%;
+
+    --success: 156 68% 26%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 190 16% 85%;
+    --input: 190 16% 82%;
+    --ring: 184 76% 32%;
+
+    /* ── Shape ─────────────────────────────────────────────────────────────
+       One radius family. `--radius` drives rounded-lg/md/sm in tailwind.config. */
+    --radius: 0.75rem;
+
+    /* ── Motion ────────────────────────────────────────────────────────────
+       Three durations and two easings cover every transition in the product. */
+    --dur-fast: 140ms;
+    --dur: 200ms;
+    --dur-slow: 320ms;
+    --ease: cubic-bezier(0.2, 0, 0, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* ── Type ──────────────────────────────────────────────────────────────
+       The Devanagari and Gurmukhi faces are listed explicitly. Without them a
+       Hindi or Punjabi page falls back to whatever the OS picks, which on
+       Windows renders Gurmukhi conjuncts with broken shaping. This is the
+       single most important typographic decision in the product. */
+    --font-sans: "Segoe UI", system-ui, -apple-system, "Nirmala UI",
+      "Noto Sans Devanagari", "Noto Sans Gurmukhi", "Noto Sans Bengali",
+      "Kohinoor Devanagari", "Kohinoor Gurmukhi", Roboto, "Helvetica Neue",
+      Arial, sans-serif;
+  }
+
+  .dark {
+    /* ── Colour: dark ───────────────────────────────────────────────────────
+       Deep blue-grey, never pure black: pure black against a bright teal
+       produces halation, which is painful for exactly the older users this
+       product serves. Surfaces step up 4% at a time so layering stays legible. */
+    --background: 202 32% 9%;
+    --foreground: 180 18% 95%;
+
+    --card: 203 26% 13%;
+    --card-foreground: 180 18% 95%;
+    --popover: 203 26% 14%;
+    --popover-foreground: 180 18% 95%;
+
+    /* Softened, brightened teal. Light text on the dark base *and* dark text on
+       the teal fill both clear 4.5:1. */
+    --primary: 175 52% 51%;
+    --primary-foreground: 198 45% 8%;
+    --primary-hover: 175 56% 58%;
+
+    --secondary: 192 28% 20%;
+    --secondary-foreground: 172 44% 88%;
+
+    --muted: 200 22% 17%;
+    --muted-foreground: 190 14% 72%;
+
+    --accent: 192 30% 22%;
+    --accent-foreground: 172 44% 88%;
+    --accent-hover: 192 30% 27%;
+
+    /* Bright red with a near-black label. Chosen so the token also works as
+       `text-destructive` on a dark surface — a dark red would be unreadable. */
+    --destructive: 0 84% 68%;
+    --destructive-foreground: 0 70% 8%;
+
+    --warning: 42 90% 22%;
+    --warning-foreground: 44 96% 82%;
+
+    --success: 152 54% 50%;
+    --success-foreground: 150 70% 8%;
+
+    --border: 200 18% 24%;
+    --input: 200 18% 27%;
+    --ring: 175 52% 51%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    /* Anchor jumps and in-page focus moves should not feel like a jump-cut. */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    /* Stops subpixel fringing on the Devanagari/Gurmukhi faces at small sizes. */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Headings carry structure, so the level is chosen in markup and the size is
+     set here. Balance stops a two-word heading orphaning its last word. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /*
+   * One focus indicator for the whole app. Tailwind's `focus-visible:ring-*`
+   * utilities cover component library elements; this covers everything a
+   * developer writes by hand — plain <a>, <button>, <summary>, <input>.
+   * Never removed without a replacement: it is the only signal a keyboard user
+   * has about where they are.
+   */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 0.375rem;
+  }
+
+  /* Explicitly opt out on the primitives, which draw their own ring. */
+  :where(.focus-ring-none):focus-visible {
+    outline: none;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.22);
+  }
+}
+
+@layer components {
+  /* ── Layout ─────────────────────────────────────────────────────────────── */
+
+  /* The single horizontal measure used by every screen. Wider than a reading
+     column on purpose: these are dashboards and tile grids, not prose. */
+  .app-container {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  /* A narrower measure for prose and single-column forms. */
+  .app-container-narrow {
+    @apply mx-auto w-full max-w-2xl px-4 sm:px-6;
+  }
+
+  /* ── Type scale ─────────────────────────────────────────────────────────── */
+
+  /* Page title. One per screen. */
+  .heading-page {
+    @apply text-2xl font-bold tracking-tight text-foreground sm:text-3xl;
+  }
+
+  /* Section title inside a page. */
+  .heading-section {
+    @apply text-lg font-semibold tracking-tight text-foreground;
+  }
+
+  /* Small caps-ish label above a group. */
+  .heading-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-wider text-muted-foreground;
+  }
+
+  .text-body {
+    @apply text-base leading-relaxed text-foreground;
+  }
+
+  .text-muted {
+    @apply text-sm leading-relaxed text-muted-foreground;
+  }
+
+  /* Supporting text that must stay readable — never below 14px. */
+  .text-support {
+    @apply text-sm leading-relaxed text-muted-foreground;
+  }
+
+  /* ── Surfaces ───────────────────────────────────────────────────────────── */
+
+  /* The one shadow level. Used only on surfaces that genuinely float above the
+     page: the sticky header, dialogs, popovers, toasts. */
+  .surface-float {
+    @apply border border-border bg-card shadow-lg;
+  }
+
+  /* In-flow panel. Borders, not shadows — a page of shadowed cards reads as
+     noise at this density. */
+  .card-medical {
+    @apply rounded-lg border border-border bg-card p-4 text-card-foreground;
+  }
+
+  /* ── Status pills ───────────────────────────────────────────────────────── */
+
+  .status-badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium;
+  }
+
+  .status-next {
+    @apply status-badge bg-primary/15 text-primary;
+  }
+
+  .status-waiting {
+    @apply status-badge bg-success/15 text-success;
+  }
+
+  .status-pending {
+    @apply status-badge bg-muted text-muted-foreground;
+  }
+
+  .status-warning {
+    @apply status-badge bg-warning text-warning-foreground;
+  }
+
+  .status-danger {
+    @apply status-badge bg-destructive/15 text-destructive;
+  }
+
+  /* ── Buttons (used by the doctor panel's markup) ─────────────────────────── */
+
+  .btn-primary {
+    @apply inline-flex touch-target items-center justify-center gap-2 rounded-md bg-primary
+      px-4 py-2 text-sm font-medium text-primary-foreground transition-colors
+      duration-150 hover:bg-primary-hover disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-amber {
+    @apply inline-flex touch-target items-center justify-center gap-2 rounded-md bg-warning
+      px-4 py-2 text-sm font-medium text-warning-foreground transition-colors
+      duration-150 hover:opacity-90 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-success {
+    @apply inline-flex touch-target items-center justify-center gap-2 rounded-md bg-success
+      px-4 py-2 text-sm font-medium text-success-foreground transition-colors
+      duration-150 hover:opacity-90 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-emergency {
+    @apply inline-flex touch-target items-center justify-center gap-2 rounded-md bg-destructive
+      px-4 py-2 text-sm font-semibold text-destructive-foreground transition-colors
+      duration-150 hover:opacity-90 disabled:pointer-events-none disabled:opacity-50;
+  }
+}
+
+@layer utilities {
+  /* Visually hidden but available to assistive tech. `clip-path` is used rather
+     than `display:none`, which would remove it from the accessibility tree. */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Minimum interactive target. 44px is the practical recommendation and also
+     clears WCAG 2.2 SC 2.5.8 (24px) with room to spare — this audience includes
+     users with reduced dexterity. */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Keyboard-only escape hatch to the main content. */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+  }
+
+  .skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    @apply rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg;
+  }
+
+  /* The single permitted gradient: a barely-there teal wash that lifts the
+     sign-in screens off the page without becoming decoration. */
+  .wash-hero {
+    background-image: linear-gradient(
+      160deg,
+      hsl(var(--primary) / 0.06) 0%,
+      hsl(var(--background)) 55%,
+      hsl(var(--secondary) / 0.35) 100%
+    );
+  }
+
+  /* Hairline rule under the sticky header, visible at 1x on both themes. */
+  .rule-brand {
+    background-image: linear-gradient(
+      90deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--primary) / 0.35) 35%,
+      transparent 100%
+    );
+  }
+}
+
+/*
+ * Motion preferences. The product has no essential animation — the only motion
+ * is opacity and small transforms on state changes — so this can safely
+ * neutralise everything.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

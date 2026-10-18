@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0e6466" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1a1e" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="description"
+      content="NabhaCare Connect — book appointments, consult doctors over video, and keep your health records in one place. Available in Punjabi, Hindi and English."
+    />
+    <title>NabhaCare Connect</title>
+    <script>
+      /*
+       * Theme bootstrap. Runs before the first paint, before the stylesheet is
+       * applied, and before React mounts, so a dark-mode reload never flashes
+       * white. This is the only inline script in the app.
+       *
+       * The logic and the storage key must stay in step with src/lib/theme.tsx
+       * (STORAGE_KEY = "nabhacare.theme"). The try/catch is deliberate: with
+       * storage disabled in private browsing, getItem throws and the app must
+       * still render, falling back to the OS preference.
+       */
+      (function () {
+        try {
+          var stored = window.localStorage.getItem("nabhacare.theme");
+          var prefersDark =
+            window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var dark = stored === "dark" || ((stored === "system" || !stored) && prefersDark);
+          var root = document.documentElement;
+          if (dark) root.classList.add("dark");
+          root.style.colorScheme = dark ? "dark" : "light";
+        } catch (e) {
+          /* storage unavailable — render with the default light theme */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

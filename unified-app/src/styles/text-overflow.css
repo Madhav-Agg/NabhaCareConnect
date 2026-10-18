@@ -1,0 +1,72 @@
+/**
+ * Utilities for text that can be considerably longer than its English original.
+ *
+ * Hindi and Punjabi labels run 30–80% longer than English ones ("Find Medicine"
+ * → "Find Medicine" is short, but "Emergency contacts" → "ਐਮਰਜੈਂਸੀ ਸੰਪਰਕ" and
+ * "No appointments scheduled" → "ਕੋਈ ਅਪਾਇੰਟਮੈਂਟ ਨਿਯੁਕਤ ਨਹੀਂ" do not fit one line).
+ * Without these rules the layout clips text or forces a horizontal scrollbar on
+ * narrow phones — which is most of this audience.
+ */
+
+/* Line-clamp helper for card and list titles. */
+@layer components {
+  .text-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .text-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .text-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /*
+   * Nav tiles and filter chips. The parent grid handles the column count; these
+   * rules stop a long word from forcing the grid wider than its container, which
+   * is what actually causes overflow with Gurmukhi conjuncts.
+   */
+  .tile-label {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.25;
+  }
+
+  .chip-label {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
+  }
+
+  /* Status badges: keep the pill from stretching its row on long translations. */
+  .badge-inline {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/*
+ * Global safety net: nothing may push the viewport sideways. `overflow-wrap`
+ * is preferred over `word-break: break-all`, which looks wrong in Latin text;
+ * this only applies where a single token genuinely cannot fit.
+ */
+@layer base {
+  body {
+    overflow-x: hidden;
+  }
+}
